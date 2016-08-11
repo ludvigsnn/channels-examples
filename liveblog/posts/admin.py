@@ -1,6 +1,16 @@
 from django.contrib import admin
 from .models import Liveblog, Post
 
+class PostAdmin(admin.ModelAdmin):
+
+    list_display=["id", "liveblog", "created", "body_intro"]
+    ordering=["-id"]
+
+    def log_deletion(self, request, object, object_repr):
+        object.delete_notification()
+        super(PostAdmin, self).log_deletion(request, object, object_repr)
+
+
 
 admin.site.register(
     Liveblog,
@@ -12,7 +22,5 @@ admin.site.register(
 
 
 admin.site.register(
-    Post,
-    list_display=["id", "liveblog", "created", "body_intro"],
-    ordering=["-id"],
+    Post,PostAdmin
 )

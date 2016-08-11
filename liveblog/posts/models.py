@@ -99,3 +99,18 @@ class Post(models.Model):
         result = super(Post, self).save(*args, **kwargs)
         self.send_notification()
         return result
+
+    def delete_notification(self):
+        """
+        Make the post dissappear from everyone in our group
+        """
+
+        notification = {
+            "id": self.id,
+            "html": "This post is deleted by the user",
+            "deleted": self.updated.strftime("%a %d %b %Y %H:%M"),
+        }
+
+        Group(self.liveblog.group_name).send({
+            "text": json.dumps(notification),
+        })

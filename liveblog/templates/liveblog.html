@@ -31,8 +31,14 @@
                 // Decode the JSON
                 console.log("Got message " + message.data);
                 var data = JSON.parse(message.data);
+                if (data.hasOwnProperty('created')){
                 // Create the inner content of the post div
                 var content = "<h2>" + data.created + "</h2>" + data.html;
+                }
+                else if(data.hasOwnProperty('deleted')){
+                var content = "<h2>" + data.deleted + "</h2>" + data.html;
+
+                }
                 // See if there's a div to replace it in, or if we should add a new one
                 var existing = $("div[data-post-id=" + data.id + "]");
                 if (existing.length) {
